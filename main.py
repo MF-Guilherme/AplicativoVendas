@@ -7,6 +7,9 @@ class HomePage(Screen):
     pass
 
 
+class AjustesPage(Screen):
+    pass
+
 GUI = Builder.load_file("main.kv")
 class MainApp(App):
 
