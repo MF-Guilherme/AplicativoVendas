@@ -3,6 +3,8 @@ from kivy.lang import Builder
 from telas import *
 from botoes import *
 import requests
+from bannervenda import BannerVenda
+
 
 GUI = Builder.load_file("main.kv")
 
@@ -30,7 +32,17 @@ class MainApp(App):
             pass
 
         for venda in vendas:
-            print(venda)
+            banner = BannerVenda(cliente=venda['cliente'],
+                                 foto_cliente=venda['foto_cliente'],
+                                 produto=venda['produto'],
+                                 foto_produto=venda['foto_produto'],
+                                 data=venda['data'],
+                                 preco=venda['preco'],
+                                 unidade=venda['unidade'],
+                                 quantidade=venda['quantidade'])
+            pagina_homepage = self.root.ids["homepage"]
+            lista_vendas = pagina_homepage.ids['lista_vendas']
+            lista_vendas.add_widget(banner)
         
     def mudar_tela(self, id_tela):
         print(id_tela)
