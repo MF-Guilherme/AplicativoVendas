@@ -8,7 +8,7 @@ GUI = Builder.load_file("main.kv")
 
 
 class MainApp(App):
-    id_usuario = 1
+    id_usuario = 2
     
     def build(self):
         return GUI
@@ -17,7 +17,8 @@ class MainApp(App):
         requisicao = requests.get(f"https://aplicativovendashash-4e118-default-rtdb.firebaseio.com/{self.id_usuario}.json")
         requisicao_dic = requisicao.json()
         avatar = requisicao_dic['avatar']
-        print(avatar)
+        foto_perfil = self.root.ids["foto_perfil"]
+        foto_perfil.source = f"icones/fotos_perfil/{avatar}"
         
     def mudar_tela(self, id_tela):
         print(id_tela)
