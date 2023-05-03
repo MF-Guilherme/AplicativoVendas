@@ -8,17 +8,29 @@ GUI = Builder.load_file("main.kv")
 
 
 class MainApp(App):
-    id_usuario = 2
+    id_usuario = 1
     
     def build(self):
         return GUI
     
     def on_start(self):
+        # pegar informações do usuario
         requisicao = requests.get(f"https://aplicativovendashash-4e118-default-rtdb.firebaseio.com/{self.id_usuario}.json")
         requisicao_dic = requisicao.json()
+        
+        # preencher foto de perfil
         avatar = requisicao_dic['avatar']
         foto_perfil = self.root.ids["foto_perfil"]
         foto_perfil.source = f"icones/fotos_perfil/{avatar}"
+        
+        #preencher lista de vendas
+        try:
+            vendas = requisicao_dic["vendas"][1:]
+        except:
+            pass
+
+        for venda in vendas:
+            print(venda)
         
     def mudar_tela(self, id_tela):
         print(id_tela)
