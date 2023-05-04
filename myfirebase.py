@@ -34,6 +34,8 @@ class MyFirebase():
             link_db = f'https://aplicativovendashash-4e118-default-rtdb.firebaseio.com/{local_id}.json'
             info_usuario = '{"avatar": "foto1.png", "equipe": "","total_vendas": "0","vendas": ""}'
             requisicao_usuario = requests.patch(link_db, data=info_usuario)
+
+            meu_aplicativo.carregar_infos_usuario()
             meu_aplicativo.mudar_tela('homepage')
 
         else:
