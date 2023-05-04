@@ -5,7 +5,7 @@ from botoes import *
 import requests
 from bannervenda import BannerVenda
 import os
-
+from functools import partial
 
 GUI = Builder.load_file("main.kv")
 
@@ -23,7 +23,7 @@ class MainApp(App):
         lista_fotos = pagina_fotoperfil.ids['lista_fotos_perfil']
         
         for foto in arquivos:
-            imagem = ImageButton(source=f'icones/fotos_perfil/{foto}', on_release=self.mudar_foto_perfil)
+            imagem = ImageButton(source=f'icones/fotos_perfil/{foto}', on_release=partial(self.mudar_foto_perfil, foto))
             lista_fotos.add_widget(imagem)
         # carrega as infos do usuario
         self.carregar_infos_usuario()
@@ -61,8 +61,15 @@ class MainApp(App):
         gerenciador_telas = self.root.ids["screen_manager"]  # self.root é o main.kv, a minha página de screen manager
         gerenciador_telas.current = id_tela  # qual tela atual (current) vc está falando? da que chegar no parametro
 
-    def mudar_foto_perfil(self, *args):
-        print("Mudar foto perfil")
+    def mudar_foto_perfil(self, foto, *args):
+        foto_perfil = self.root.ids["foto_perfil"]
+        foto_perfil.source = f"icones/fotos_perfil/{foto}"
+        
+        info = f'{{"avatar": "{foto}"}}'
+        requisicao = requests.patch(f"https://aplicativovendashash-4e118-default-rtdb.firebaseio.com/{self.id_usuario}.json",
+                                    data=info)
+        
+        self.mudar_tela("ajustespage")
 
 
 MainApp().run()
