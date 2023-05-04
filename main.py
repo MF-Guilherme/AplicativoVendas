@@ -31,6 +31,14 @@ class MainApp(App):
 
     def carregar_infos_usuario(self):
         try:
+
+            with open('refreshtoken.txt', 'r') as arquivo:
+                refresh_token = arquivo.read()
+            local_id, id_token = self.firebase.trocar_token(refresh_token)
+
+            self.local_id = local_id
+            self.id_token = id_token
+
             # pegar informações do usuario
             requisicao = requests.get(f"https://aplicativovendashash-4e118-default-rtdb.firebaseio.com/{self.local_id}.json")
             requisicao_dic = requisicao.json()
@@ -57,9 +65,12 @@ class MainApp(App):
                     lista_vendas.add_widget(banner)
             except:
                 pass
+
+            self.mudar_tela('homepage')
+
         except:
             pass
-        
+
     def mudar_tela(self, id_tela):
         print(id_tela)
         gerenciador_telas = self.root.ids["screen_manager"]  # self.root é o main.kv, a minha página de screen manager
