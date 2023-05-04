@@ -17,6 +17,19 @@ class MyFirebase():
         
         if requisicao.ok:
             print("Usuário criado")
+            # requisicao_dic["idToken"] -> autenticação
+            # requisicao_dic["refreshToken"] -> token que mantém o usuário logado
+            # requisicao_dic["localId"] -> ID do usuário
+            refresh_token = requisicao_dic["refreshToken"]
+            local_id = requisicao_dic["localId"]
+            id_token = requisicao_dic["idToken"]
+
+            meu_aplicativo = App.get_running_app() # é o meu aplicativo (self)
+            meu_aplicativo.local_id = local_id
+            meu_aplicativo.id_token = id_token
+
+            with open("refreshtoken.txt", "w") as arquivo:
+                arquivo.write(refresh_token)
         else:
             mensagem_erro = requisicao_dic["error"]["message"]
             meu_aplicativo = App.get_running_app()
